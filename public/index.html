@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gaming Hub Ultra | Professional Esports</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+
+    <header>
+        <div class="header-inner container">
+            <div class="logo" onclick="showSection('home-sec')">
+                <i class="fas fa-bolt"></i> GAMING<span class="accent-text">HUB</span>
+            </div>
+            <nav>
+                <a href="#" class="nav-link active" onclick="showSection('home-sec')">Главная</a>
+                <a href="#" class="nav-link" onclick="showSection('shop-sec')">Маркет</a>
+                <a href="#" class="nav-link" onclick="showSection('news-sec')">Лента</a>
+                <a href="#" class="nav-link auth-only" onclick="showSection('profile-sec')">Профиль</a>
+                <a href="#" class="nav-link" onclick="showSection('top-sec'); loadTopPlayers()">ТОП</a>
+
+            </nav>
+            <div class="header-controls">
+                <div class="cart-widget auth-only" onclick="openCart()">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span id="cart-count">0</span>
+                </div>
+                <div class="user-status auth-only">
+                    <div class="wallet-display" onclick="openModal('topupModal')">
+                        <i class="fas fa-wallet"></i> <span id="balance-val">0</span> ₸
+                    </div>
+                </div>
+                <button class="btn-primary" onclick="openModal('loginModal')" id="login-btn">Войти</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <section id="home-sec" class="content-section active">
+            <div class="hero-premium">
+                <div class="hero-content">
+                    <span class="tag-new">LIVE TOURNAMENT</span>
+                    <h1>Доминируй в <span class="accent-text">Cyber Sport</span></h1>
+                    <p>Присоединяйся к 50,000+ игроков. Сражайся за скины и признание.</p>
+                    <div class="hero-btns">
+                        <button class="btn-primary btn-lg shine-effect" onclick="showSection('shop-sec')">В
+                            магазин</button>
+                        <button class="btn-outline-lg auth-only" onclick="openModal('topupModal')">Пополнить
+                            баланс</button>
+                    </div>
+                </div>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card glass-morphism">
+                    <i class="fas fa-bolt"></i>
+                    <h3>128 Tickrate</h3>
+                    <p>Минимальный пинг в Алматы и СНГ для идеальной стрельбы.</p>
+                </div>
+                <div class="feature-card glass-morphism">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>Anti-Cheat</h3>
+                    <p>Честная игра под защитой продвинутого ИИ-античита.</p>
+                </div>
+                <div class="feature-card glass-morphism">
+                    <i class="fas fa-shopping-cart"></i>
+                    <h3>Marketplace</h3>
+                    <p>Покупай редкие скины и предметы за игровую валюту ₸.</p>
+                </div>
+                <div class="feature-card glass-morphism">
+                    <i class="fas fa-trophy"></i>
+                    <h3>Rank System</h3>
+                    <p>Прокачивай XP, повышай свой ранг и доминируй в топе сервера.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="top-sec" class="content-section">
+            <div class="section-header">
+                <h2 style="margin-bottom: 20px;">Рейтинг Игроков</h2>
+            </div>
+            <div id="top-players-container" class="items-grid">
+            </div>
+        </section>
+
+        <section id="shop-sec" class="content-section">
+            <div class="section-header">
+                <h2 style="margin-bottom: 10px;">Маркетплейс предметов</h2>
+            </div>
+            <div class="items-grid" id="shop-items-container"></div>
+        </section>
+
+        <section id="news-sec" class="content-section">
+            <div class="news-layout">
+                <div class="news-main">
+                    <div class="section-header">
+                        <h2>Лента новостей</h2>
+                        <button class="btn-primary auth-only" onclick="openModal('addNewsModal')">+ Создать
+                            пост</button>
+                    </div>
+                    <div id="news-container" class="news-grid-list"></div>
+                </div>
+                <div class="reviews-sidebar">
+                    <h3>Отзывы</h3>
+                    <div id="reviews-container" class="reviews-list"></div>
+                    <button class="btn-secondary full-width" onclick="openModal('reviewModal')">Написать отзыв</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="profile-sec" class="content-section">
+            <div class="profile-layout">
+                <div class="profile-card glass-morphism">
+                    <div class="profile-header">
+                        <div class="avatar-wrapper" onclick="openModal('settingsModal')">
+                            <img src="https://i.pravatar.cc/100?img=3" alt="Avatar" class="profile-avatar-big" id="p-avatar">
+                            <div class="avatar-edit-overlay"><i class="fas fa-camera"></i></div>
+                        </div>
+                        <div class="profile-info-main">
+                            <h2 id="p-username">Пользователь</h2>
+                            <div class="xp-bar-container">
+                                <span class="level-label" id="p-level">LVL 1</span>
+                                <div class="xp-bar">
+                                    <div id="p-progress" class="xp-progress" style="width: 0%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="stats-row">
+                        <div class="stat-item"><span>Баланс:</span> <strong id="p-balance">0</strong> ₸</div>
+                        <div class="stat-item"><span>Ранг:</span> <strong id="p-rank-display">Silver III</strong></div>
+                        <div class="stat-item">
+                            <span>ID:</span> 
+                            <strong class="accent-text">#<span id="p-id">0000</span></strong>
+                        </div>
+                    </div>
+        
+                    <div class="profile-actions">
+                        <button class="btn-primary full-width" onclick="openModal('settingsModal')">
+                            <i class="fas fa-cog"></i> Настройки
+                        </button>
+                        <button class="btn-outline full-width" onclick="logout()">
+                            <i class="fas fa-sign-out-alt"></i> Выйти
+                        </button>
+                    </div>
+                </div>
+        
+                <div class="inventory-card glass-morphism">
+                    <div class="section-header">
+                        <h3><i class="fas fa-box-open"></i> Мои покупки</h3>
+                    </div>
+                    <div id="p-inventory" class="inventory-list">
+                        <p class="text-dim">Загрузка предметов...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <div id="settingsModal" class="modal">
+            <div class="modal-content glass-morphism">
+                <span class="close" onclick="closeModal('settingsModal')">&times;</span>
+                <h2><i class="fas fa-sliders-h"></i> Настройки</h2>
+                
+                <div class="settings-group">
+                    <label>Тема оформления</label>
+                    <button class="btn-secondary full-width" onclick="toggleTheme()">
+                        <i class="fas fa-adjust"></i> Сменить Темную/Светлую
+                    </button>
+                </div>
+        
+                <div class="settings-group" style="margin-top: 20px;">
+                    <label>Аватар (URL картинки)</label>
+                    <div style="display: flex; gap: 10px; margin-top: 10px;">
+                        <input type="text" id="avatar-url-input" placeholder="https://..." 
+                               style="flex: 1; background: var(--surface-light); border: 1px solid var(--border); padding: 12px; border-radius: 8px; color: white;">
+                        <button class="btn-primary" onclick="updateAvatar()">Ок</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('loginModal')">&times;</span>
+            <div id="auth-box">
+                <h3 id="auth-title">Авторизация</h3>
+                <form id="loginForm">
+                    <input type="text" id="log-user" placeholder="Ваш никнейм" class="full-width mb-15" required>
+                    <input type="password" placeholder="Пароль" class="full-width mb-15" required>
+                    <button class="btn-primary full-width">Войти в Хаб</button>
+                    <p class="switch-auth">Нет аккаунта? <a href="#" onclick="toggleAuth(false)">Регистрация</a></p>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="addNewsModal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('addNewsModal')">&times;</span>
+            <h3>Новый пост</h3>
+            <form id="newsForm">
+                <input type="text" id="news-title" placeholder="Заголовок" class="full-width mb-15" required>
+                <textarea id="news-content" placeholder="Текст новости..." class="full-width mb-15" required></textarea>
+                <button class="btn-primary full-width">Опубликовать</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="reviewModal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('reviewModal')">&times;</span>
+            <h3>Ваш отзыв</h3>
+            <form id="reviewForm">
+                <select id="rev-stars" class="full-width mb-15 custom-select">
+                    <option value="5">⭐⭐⭐⭐⭐ (5/5)</option>
+                    <option value="4">⭐⭐⭐⭐ (4/5)</option>
+                    <option value="3">⭐⭐⭐ (3/5)</option>
+                </select>
+                <textarea id="rev-content" placeholder="Напишите честно..." class="full-width mb-15"
+                    required></textarea>
+                <button class="btn-primary full-width">Отправить</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="topupModal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('topupModal')">&times;</span>
+            <h3>Пополнение</h3>
+            <input type="number" id="topup-amount" placeholder="Сумма в ₸" class="full-width mb-15">
+            <button class="btn-primary full-width" onclick="processTopUp()">Оплатить</button>
+        </div>
+    </div>
+
+    <div class="modal" id="cartModal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('cartModal')">&times;</span>
+            <h3>Ваша корзина</h3>
+            <div id="cart-items-list" style="margin-bottom: 20px; max-height: 300px; overflow-y: auto;">
+                <p style="text-align:center; color: var(--text-dim);">Корзина пуста</p>
+            </div>
+            <div style="border-top: 1px solid var(--border); padding-top: 15px;">
+                <div style="display:flex; justify-content: space-between; margin-bottom: 20px;">
+                    <span>Итого:</span>
+                    <span class="accent-text" id="cart-total-price">0 ₸</span>
+                </div>
+                <button class="btn-primary full-width" onclick="checkout()">Оплатить заказ</button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="logo">
+                        <i class="fas fa-bolt"></i> GAMING<span class="accent-text">HUB</span>
+                    </div>
+                    <p>Профессиональная киберспортивная платформа для игроков СНГ. Турниры, маркетплейс и сообщество.
+                    </p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-discord"></i></a>
+                        <a href="#"><i class="fab fa-telegram"></i></a>
+                        <a href="#"><i class="fab fa-vk"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+
+                <div class="footer-nav">
+                    <h4>Навигация</h4>
+                    <ul>
+                        <li><a href="#" onclick="showSection('home-sec')">Главная</a></li>
+                        <li><a href="#" onclick="showSection('shop-sec')">Маркетплейс</a></li>
+                        <li><a href="#" onclick="showSection('news-sec')">Новости</a></li>
+                        <li><a href="#">Турниры</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-nav">
+                    <h4>Поддержка</h4>
+                    <ul>
+                        <li><a href="#">База знаний</a></li>
+                        <li><a href="#">Тех. поддержка</a></li>
+                        <li><a href="#">Правила сообщества</a></li>
+                        <li><a href="#">Политика конфиденциальности</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-status">
+                    <h4>Статус систем</h4>
+                    <div class="status-item">
+                        <span class="status-dot online"></span> Game Servers: 128 Tick
+                    </div>
+                    <div class="status-item">
+                        <span class="status-dot online"></span> API & Database: Stable
+                    </div>
+                    <div class="status-item">
+                        <span class="status-dot online"></span> Anti-Cheat: Protected
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 Gaming Hub Ultra. Все права защищены. Developed for Esports.</p>
+                <div class="payment-methods">
+                    <i class="fab fa-cc-visa"></i>
+                    <i class="fab fa-cc-mastercard"></i>
+                    <i class="fas fa-money-bill-wave"></i>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
